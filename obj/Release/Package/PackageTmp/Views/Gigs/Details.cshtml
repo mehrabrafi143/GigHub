@@ -1,0 +1,25 @@
+﻿@model GigHub.Core.ViewModels.GigDetailsViewModel
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="margin-top-md">
+    <span class="gig-artist-title">@Model.Gig.Artist.Name</span>
+    @if (@Model.IsAuthourize)
+    {
+        <a data-id ="@Model.Gig.Artist.Id" class="btn btn-sm @(@Model.FlowText.Split(' ')[1]) js-toggle-follow margin-left-sm">@Model.FlowText.Split(' ')[0]</a>
+    }
+    <p class="text-info margin-top-sm">In @Model.Gig.Venue at @Model.Gig.DateTime.ToString("M") at @Model.Gig.DateTime.ToString("t")</p>
+    @if(@Model.IsAuthourize && @Model.IsGoing) { <p class="margin-top-sm">You are going to this gig</p> }
+</div>
+ 
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            FollowController.init();
+        });
+    </script>
+}

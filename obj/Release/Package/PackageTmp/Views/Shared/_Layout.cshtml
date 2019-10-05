@@ -1,0 +1,152 @@
+﻿@using Microsoft.AspNet.Identity
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,500,700" rel="stylesheet">
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("GigHub", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Create Gig", "Create", "Gigs")</li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+<div class="container body-content">
+        @RenderBody()
+    <hr/>
+    <footer>
+        <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+    </footer>
+</div>
+
+    @Scripts.Render("~/bundles/lib")
+    @Scripts.Render("~/bundles/app")
+    @RenderSection("scripts", required: false)
+<script type="text/x-template" id="notificationContent">
+    <ul class="notification-bar">
+        <%
+        _.each(notification, function (n)
+        {
+
+
+        if(n.notificationType == 1)
+        { %>
+        <li>
+            <span class="highlight"> <%= n.gig.artist.name %> </span>
+            has cancle his gig at <%= n.gig.venue %>
+            at <%= n.gig.dateTime %>
+        </li>
+        <%
+        } else if(n.notificationType == 2)
+        { %>
+
+        <li>
+            <span class="highlight"> <%= n.gig.artist.name %> </span>
+            has Update his gig at
+            <% if(n.originalVeneu != null)
+            { %>
+
+            <%= n.originalVeneu %> to
+
+            <% } %>
+            <%= n.gig.venue %>
+            at
+
+            <%  if(n.originalDateTime != null) { %> <%= moment(n.originalDateTime).format('MMMM Do YYYY, h:mm') %> to   <%} %>
+            <%= moment(n.gig.dateTime).format('MMMM Do YYYY, h:mm') %>
+
+        </li>
+        <%
+        }else if(n.notificationType == 3)
+        { %>
+        <li> <span class="highlight"> <%= n.gig.artist.name %> </span> has created gig at <%= n.gig.venue %> at <%= moment(n.gig.dateTime).format('MMMM Do YYYY, h:mm') %> </li>
+        <%}
+
+        } )%>
+    </ul>    
+</script>
+<script>
+    $(document).ready(function() {
+
+        $.getJSON('/api/notification/getNotifications/',
+            function (count) {
+
+                if (count.length === 0) {
+                    $.getJSON('/api/notification/getReadNotifications/',
+                        function(notification) {
+                            if (notification.length === 0) {
+                                $('.notifications').popover({
+                                    html: true,
+                                    title: 'Notifications',
+                                    content: function() {
+                                        return 'You have no notification';
+                                    },
+                                    placement: 'bottom'
+                                });
+                            } else {
+                                $('.notifications').popover({
+                                    html: true,
+                                    title: 'Notifications',
+                                    content: function () {
+                                        var c = _.template($('#notificationContent').html());
+                                        return c({ notification: notification });
+                                    },
+                                    template:
+                                        '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content custome-popover"></div></div>',
+                                    placement: 'bottom'
+                                });
+                            }
+                        });
+                } else {
+                    $('#js-notification-count')
+                        .text(count.length)
+                        .removeClass('hide')
+                        .addClass('animated bounceIn');
+
+                    $('.notifications').popover({
+                        html: true,
+                        title: 'Notifications',
+                        content: function() {
+                            var c = _.template($("#notificationContent").html());
+                            return c({ notification: count });
+                        },
+                        template:
+                            '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content custome-popover"></div></div>',
+                        placement: 'bottom'
+                    }).on('shown.bs.popover',
+                        function() {
+                            $.ajax({
+                                url: '/api/notification/notificationRead',
+                                method: 'POST',
+                                success: function () {
+                                    $('#js-notification-count')
+                                        .text('')
+                                        .addClass('hide');
+                                }
+                            });
+                        });
+                }
+
+            });
+    })
+</script>
+</body>
+</html>

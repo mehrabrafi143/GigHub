@@ -1,0 +1,93 @@
+﻿@color_1: #ffffff;
+
+.gigs {
+    list-style: none;
+
+    > li {
+        position: relative;
+        margin-bottom: 25px;
+        width: 240px;
+
+        > .datetime {
+            width: 80px;
+            height: 75px;
+            background: #F93800;
+            margin-top: 20px;
+            border-radius: 15px 15px 0 0;
+            overflow: hidden;
+            margin-top: 20px;
+            position: relative;
+            text-align: center;
+        }
+
+        > .gig-info {
+            position: absolute;
+            margin-left: 90px;
+            left: 0;
+            top: 5px;
+
+            > .artist {
+                display: block;
+                font-weight: 500;
+                margin-bottom: -4px;
+                width: 279px;
+            }
+
+            > .genre {
+                font-weight: 300;
+                font-size: 13px;
+            }
+        }
+
+        &:hover {
+            .btn-edit-del {
+                display: block;
+            }
+        }
+    }
+}
+
+.datetime {
+    > .month {
+        position: absolute;
+        top: 5px;
+        width: 90px;
+        color: @color_1;
+    }
+
+    > .date {
+        position: absolute;
+        top: 30px;
+        height: 80px;
+        background: #f6efef;
+        width: 80px;
+        font-size: 20px;
+    }
+}
+
+.buttons {
+    position: absolute;
+    top: 5px;
+    left: 200px;
+    display: inline-block;
+}
+
+.btn-sm-custome {
+    padding: 5px 0;
+    font-size: 12px;
+    line-height: 1.5;artist
+    border-radius: 3px;
+}
+
+.btn-edit-del {
+    display: none;
+    transition: all .5s ease-out;
+}
+
+.gig-artist-title{ 
+    font-size:22px;
+}
+
+.going-btn{
+  display:block;
+}

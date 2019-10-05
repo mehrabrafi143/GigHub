@@ -1,0 +1,66 @@
+﻿// Color variables (appears count calculates by raw css)
+@color0: #de2726; // Appears 3 times
+@color1: #ffffff; // Appears 2 times
+@color2: #ff4342; // Appears 2 times
+@color07a: #fff;
+@atmax767: (max-width: 767px);
+
+.navbar-inverse {
+    background-color: @color2;
+    border-color: @color2;
+
+    .navbar-brand {
+        color: @color1;
+        font-size: 25px;
+        font-weight: 700;
+    }
+
+    .navbar-toggle {
+        border-color: @color2;
+
+        &:focus, &:hover {
+            background-color: @color2;
+            border-color: @color2;
+        }
+    }
+
+    .navbar-collapse{
+        border-color: @color2;
+    }
+
+    .navbar-nav {
+        > li > a {
+            color: @color1;
+        }
+
+        > .open > a {
+            background-color: @color2;
+
+            &:focus {
+                background-color: @color2;
+            }
+
+            &:hover {
+                background-color: @color2;
+            }
+        }
+    }
+}
+
+.dropdown-menu {
+    box-shadow: none;
+}
+
+.form-control {
+    transition:none;
+}
+
+@media (max-width: 767px){
+    .navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
+         color: @color1; 
+    }
+}
+
+.dropdown-menu .divider {
+    background-color: @color1;
+}

@@ -1,0 +1,45 @@
+﻿ul.notification-bar {
+    list-style: none;
+    padding: 0px;
+
+    > li {
+        padding: 10px 10px;
+        border-bottom: 1px solid #ddd;
+        word-spacing: 2px;
+    }
+}
+
+.navbar-right > .notifications {
+    position: relative;
+    display: inline-block;
+    font-size: 1.5rem;
+
+    > a > .badge {
+        position: absolute;
+        top: 8px;
+        right: -1px;
+        background: #a80a0a;
+    }
+}
+
+ul.notification-bar {
+    > li {
+        &:last-child {
+            padding: 10px 10px;
+            border-bottom: none;
+        }
+
+        > .highlight {
+            font-weight: 700;
+        }
+    }
+}
+
+
+.custome-popover {
+    padding: 0;
+} 
+
+.popover {
+    box-shadow:none;  
+}

@@ -1,0 +1,72 @@
+﻿@using Microsoft.AspNet.Identity
+@model GigHub.Core.ViewModels.GigViewModel
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<h2>@Model.Heading</h2>
+
+@using (Html.BeginForm("Search", "Gigs", new { search = Model.Search }))
+{
+    <div class="form-group">
+        <div class="input-group" id="searchGig">
+            @Html.TextBoxFor(m => m.Search, new { @class = "form-control",placeholder = "Search by artist, genre or venue" })
+            <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+        </div>
+    </div>
+}
+
+<ul class="gigs" >
+    @foreach (var gig in Model.Gigs)
+    {
+        <li>
+            <div class="datetime">
+                <div class="month">
+                    @gig.DateTime.ToString("MMM")
+                </div>
+                <div class="date">
+                    @gig.DateTime.ToString("d ")
+                </div>
+            </div>
+            <div class="gig-info">
+                <span class="artist">
+
+                   <a href="@Url.Action("Details","Gigs",new {id = gig.Id})" > @gig.Artist.Name </a>
+                    @if (gig.IsCancel)
+                    {
+                        <span class="label label-info">Cancel</span>
+                    }
+                    
+                    
+                </span>
+                
+                <span class="genre">
+                    @gig.Genre.Name
+                </span>
+                @if (Model.IsAuthorize)
+                {
+                    <span class="going-btn">
+                        @if (!gig.IsCancel)
+                        {
+                            <a data-id="@gig.Id"
+                               class="btn btn-sm @(Model.Attendances.Contains(gig.Id) ? "btn-primary" : "btn-default" )
+                                 js-toggle-going ">@(Model.Attendances.Contains(gig.Id) ? "going" : "going ?" )</a>
+                        }
+                    </span>
+                }
+            </div>
+           
+        </li>
+        }
+</ul>
+
+
+@section scripts
+{
+    <script>
+        $(document).ready(function() {
+            console.log('sde');
+            GigController.init('.gigs');
+        });
+    </script>   
+}
